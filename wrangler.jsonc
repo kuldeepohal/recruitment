@@ -1,0 +1,11 @@
+{
+  "name": "recruitment-platform",
+  "compatibility_date": "2026-08-16",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "recruitment-db",
+      "database_id": "8c72437b-74d0-4486-b116-b411b3c07017"
+    }
+  ]
+}
