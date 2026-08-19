@@ -1,108 +1,78 @@
-import type { LoaderFunctionArgs } from "react-router";
+import type { MetaFunction } from "react-router";
 import { useLoaderData, Link } from "react-router";
 import { createDb } from "~/db/index.server";
 import { getLatestRecruitments } from "~/models/recruitment.server";
 
-// 1. SERVER-SIDE LOADER: Runs securely on Cloudflare Edge
-export const loader = async ({ context }: LoaderFunctionArgs) => {
-  const db = (context as any).cloudflare?.env?.DB;
+export const meta: MetaFunction = () => [
+  { title: "Latest Government Jobs & Recruitment 2026 | GovJob Central" },
+  {
+    name: "description",
+    content:
+      "Find the latest government jobs and recruitment notifications in India, including vacancies, eligibility, important dates, official notifications and application links.",
+  },
+];
 
-  if (!db) {
-    return { latestJobs: [] };
-  }
-
-  const latestJobs = await getLatestRecruitments(createDb(db as D1Database));
+export const loader = async () => {
+  const latestJobs = await getLatestRecruitments(createDb(), 24);
   return { latestJobs };
 };
 
-// 2. CLIENT UI: Renders the Homepage
 export default function Index() {
   const { latestJobs } = useLoaderData<typeof loader>();
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 font-sans">
-      {/* Header Area */}
       <header className="bg-white border-b border-gray-200 px-4 py-4 md:px-8">
-        <div className="max-w-5xl mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-blue-700">GovJob Central</h1>
-          <nav className="space-x-4 text-sm font-medium">
-            <Link to="/" className="text-gray-700 hover:text-blue-600">Latest Jobs</Link>
-            <Link to="/" className="text-gray-700 hover:text-blue-600">Maharashtra</Link>
-            <Link to="/" className="text-blue-600 border border-blue-600 px-3 py-1.5 rounded hover:bg-blue-50">
-              Premium
-            </Link>
+        <div className="max-w-6xl mx-auto flex flex-wrap gap-4 justify-between items-center">
+          <Link to="/" className="text-2xl font-bold text-blue-700">GovJob Central</Link>
+          <nav className="flex gap-4 text-sm font-medium">
+            <Link to="/jobs" className="text-gray-700 hover:text-blue-600">All Jobs</Link>
+            <Link to="/jobs?state=Maharashtra" className="text-gray-700 hover:text-blue-600">Maharashtra</Link>
+            <Link to="/jobs?qualification=10th" className="text-gray-700 hover:text-blue-600">10th Pass</Link>
+            <Link to="/jobs?qualification=Graduate" className="text-gray-700 hover:text-blue-600">Graduate Jobs</Link>
           </nav>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="max-w-5xl mx-auto px-4 py-8 md:px-8">
-        <h2 className="text-xl font-bold mb-6 border-b pb-2">Latest Recruitments</h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {latestJobs.map((job) => (
-            <article 
-              key={job.id} 
-              className="bg-white border border-gray-200 rounded-lg p-5 shadow-sm hover:shadow-md transition-shadow"
-            >
-              {/* Card Header (Rule 61) */}
-              <div className="flex justify-between items-start mb-2">
-                <span className="text-xs font-semibold bg-green-100 text-green-800 px-2 py-1 rounded">
-                  NEW
-                </span>
-                <span className="text-xs text-gray-500 font-medium bg-gray-100 px-2 py-1 rounded">
-                  {job.state}
-                </span>
-              </div>
-              
-              <h3 className="text-sm font-bold text-gray-600 uppercase tracking-wide mt-3">
-                {job.organisation}
-              </h3>
-              <h4 className="text-lg font-semibold text-gray-900 leading-snug mt-1 mb-4">
-                {job.title}
-              </h4>
+      <main className="max-w-6xl mx-auto px-4 py-8 md:px-8">
+        <section className="mb-8">
+          <p className="text-sm font-semibold text-blue-600 uppercase tracking-wide">Government Recruitment Updates</p>
+          <h1 className="text-3xl md:text-4xl font-bold mt-2 mb-3">Latest Government Jobs in India</h1>
+          <p className="text-gray-600 max-w-3xl leading-7">
+            Explore current recruitment notifications with vacancies, eligibility, age limits, important dates and links to official sources.
+          </p>
+        </section>
 
-              {/* Data Grid */}
-              <div className="grid grid-cols-2 gap-y-3 text-sm mb-5">
-                <div>
-                  <span className="block text-gray-500 text-xs">Vacancies</span>
-                  <span className="font-medium">{job.numberOfPosts || "Not Specified"}</span>
-                </div>
-                <div>
-                  <span className="block text-gray-500 text-xs">Qualification</span>
-                  <span className="font-medium truncate block pr-2" title={job.minimumQualification || ""}>
-                    {job.minimumQualification || "See Notification"}
-                  </span>
-                </div>
-                <div>
-                  <span className="block text-gray-500 text-xs">Age Limit</span>
-                  <span className="font-medium">
-                    {job.minimumAge}-{job.maximumAge} Yrs
-                  </span>
-                </div>
-                <div>
-                  <span className="block text-gray-500 text-xs">Last Date</span>
-                  <span className="font-medium text-red-600">
-                    {job.applicationLastDate ? new Date(job.applicationLastDate).toLocaleDateString('en-IN') : "TBA"}
-                  </span>
-                </div>
-              </div>
-
-              {/* Call to Action */}
-              <div className="flex justify-between items-center pt-4 border-t border-gray-100">
-                <button className="text-gray-500 hover:text-blue-600 text-sm font-medium flex items-center gap-1">
-                  ♡ Save
-                </button>
-                <Link 
-                  to={`/recruitment/${job.slug}`}
-                  className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded transition-colors"
-                >
-                  View Details
-                </Link>
-              </div>
-            </article>
-          ))}
+        <div className="flex items-center justify-between mb-5">
+          <h2 className="text-xl font-bold">Latest Recruitments</h2>
+          <Link to="/jobs" className="text-sm font-semibold text-blue-600 hover:underline">View all jobs →</Link>
         </div>
+
+        {latestJobs.length === 0 ? (
+          <div className="bg-white border border-gray-200 rounded-lg p-10 text-center text-gray-500">
+            Recruitment updates are being prepared. Please check again soon.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+            {latestJobs.map((job) => (
+              <article key={job.id} className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex justify-between items-start gap-3 mb-3">
+                  <span className="text-xs font-semibold bg-green-100 text-green-800 px-2 py-1 rounded">LATEST</span>
+                  {job.state && <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">{job.state}</span>}
+                </div>
+                <p className="text-xs font-bold text-gray-500 uppercase tracking-wide">{job.organisation}</p>
+                <h2 className="text-lg font-semibold text-gray-900 leading-snug mt-1 mb-4">{job.title}</h2>
+                <div className="grid grid-cols-2 gap-3 text-sm mb-5">
+                  <div><span className="block text-gray-500 text-xs">Vacancies</span><span className="font-medium">{job.numberOfPosts ?? "See notice"}</span></div>
+                  <div><span className="block text-gray-500 text-xs">Qualification</span><span className="font-medium truncate block" title={job.minimumQualification || ""}>{job.minimumQualification || "See notice"}</span></div>
+                  <div><span className="block text-gray-500 text-xs">Age</span><span className="font-medium">{job.minimumAge ?? "-"}-{job.maximumAge ?? "-"} yrs</span></div>
+                  <div><span className="block text-gray-500 text-xs">Last Date</span><span className="font-medium text-red-600">{job.applicationLastDate ? new Date(job.applicationLastDate).toLocaleDateString("en-IN") : "TBA"}</span></div>
+                </div>
+                <Link to={`/recruitment/${job.slug}`} className="block text-center bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2.5 rounded-lg">View Details</Link>
+              </article>
+            ))}
+          </div>
+        )}
       </main>
     </div>
   );
