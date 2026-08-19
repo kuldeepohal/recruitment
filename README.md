@@ -1,79 +1,64 @@
-# Welcome to React Router!
+# GovJob Central
 
-A modern, production-ready template for building full-stack React applications using React Router.
+A fast, SEO-first government recruitment discovery platform built with React Router, Vite, TypeScript, Tailwind CSS, Drizzle ORM and a libSQL-compatible database.
 
-## Features
+## Goals
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+- Publish a large number of structured recruitment pages.
+- Make every published recruitment discoverable through search engines.
+- Provide clear links to official recruitment notifications and application portals.
+- Support useful job-search filters and future content/guide pages.
+- Keep the application portable across Node-compatible hosting providers.
 
-## Getting Started
+## Runtime
 
-### Installation
+- React Router SSR
+- Vite
+- TypeScript
+- Tailwind CSS
+- Drizzle ORM
+- libSQL/Turso-compatible database
+- Node.js 22+
 
-Install the dependencies:
+The application no longer requires Cloudflare D1 at runtime. Configure `DATABASE_URL` and optional `DATABASE_AUTH_TOKEN` through environment variables.
+
+## Local setup
 
 ```bash
 npm install
-```
-
-### Development
-
-Start the development server with HMR:
-
-```bash
+cp .env.example .env
 npm run dev
 ```
 
-Your application will be available at `http://localhost:5173`.
+Set a real database connection before loading database-backed pages.
 
-## Previewing the Production Build
-
-Preview the production build locally:
-
-```bash
-npm run preview
-```
-
-## Building for Production
-
-Create a production build:
+## Production
 
 ```bash
 npm run build
+npm start
 ```
 
-## Deployment
+A Dockerfile is included for container-based deployment.
 
-Deployment is done using the Wrangler CLI.
+## Deployment strategy
 
-To build and deploy directly to production:
+The application is intentionally kept at the Node/HTTP runtime layer so it can be adapted to Vercel, Netlify, Render, Railway, a VPS, or a container platform without changing the database/business logic.
 
-```sh
-npm run deploy
-```
+For a serverless platform, use that platform's React Router adapter/runtime configuration rather than adding platform-specific database code to application routes.
 
-To deploy a preview URL:
+## SEO and reach
 
-```sh
-npx wrangler versions upload
-```
+The project includes dynamic metadata, canonical URL support, Open Graph metadata, `JobPosting` structured data, `robots.txt`, an XML sitemap, clean recruitment slugs, and internal links between listings and detail pages.
 
-You can then promote a version to production after verification or roll it out progressively.
+The content strategy should grow around useful landing pages such as state-wise jobs, qualification-wise jobs, organisation/exam hubs, application guides, eligibility explainers, admit-card/result updates and FAQs. Avoid thin duplicate pages; each page should add useful information.
 
-```sh
-npx wrangler versions deploy
-```
+## Trust and monetization
 
-## Styling
+Every recruitment should identify its official source and send applicants to official notification/application links. Sponsored or affiliate content must be clearly labelled and must never be presented as an official government link.
 
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+Potential relevant monetization categories include clearly labelled education, exam-preparation, books, productivity tools and other job-seeker resources. Monetization should remain secondary to accurate recruitment information and good page performance.
 
----
+## Data quality
 
-Built with ❤️ using React Router.
+Recruitment records should be verified against the official source before publishing. Store source URL, notification URL, application URL, last-checked timestamp and publication status so stale information can be reviewed and updated.
