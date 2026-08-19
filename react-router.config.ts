@@ -1,6 +1,6 @@
-import JobBoard from './pages/JobBoard';
+import type { Config } from "@react-router/dev/config";
 
-// Inside your Router setup:
-<Route path="/jobs" element={<JobBoard />} />
-// or make it your home page:
-<Route path="/" element={<JobBoard />} />
+export default {
+  appDirectory: "app",
+  ssr: true,
+} satisfies Config;
