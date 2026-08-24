@@ -7,7 +7,7 @@ export const meta: MetaFunction = () => [
   { title: "Government Jobs 2026 - Latest Recruitment Notifications | GovJob Central" },
   {
     name: "description",
-    content: "Search the latest government jobs and recruitment notifications in India by keyword, state and qualification.",
+    content: "Search the latest government jobs and recruitment notifications in India by keyword, state and qualification, including Maharashtra teacher recruitment.",
   },
 ];
 
@@ -26,9 +26,12 @@ export default function JobsListing() {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 font-sans">
       <header className="bg-white border-b border-gray-200 px-4 py-4 md:px-8">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
+        <div className="max-w-7xl mx-auto flex flex-wrap gap-4 justify-between items-center">
           <Link to="/" className="text-xl font-bold text-blue-700">GovJob Central</Link>
-          <Link to="/" className="text-sm text-gray-600 hover:text-blue-600">Home</Link>
+          <nav className="flex gap-4 text-sm">
+            <Link to="/teacher-recruitment" className="font-semibold text-blue-600">Teacher Recruitment</Link>
+            <Link to="/" className="text-gray-600 hover:text-blue-600">Home</Link>
+          </nav>
         </div>
       </header>
 
@@ -39,7 +42,7 @@ export default function JobsListing() {
             <Form method="get" className="space-y-4">
               <div>
                 <label className="block text-sm font-medium mb-1">Keyword</label>
-                <input name="search" defaultValue={filters.search} placeholder="Police, Clerk, SSC..." className="w-full border rounded px-3 py-2 text-sm" />
+                <input name="search" defaultValue={filters.search} placeholder="Teacher, Police, Clerk, SSC..." className="w-full border rounded px-3 py-2 text-sm" />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">State</label>
@@ -51,7 +54,7 @@ export default function JobsListing() {
               <div>
                 <label className="block text-sm font-medium mb-1">Qualification</label>
                 <select name="qualification" defaultValue={filters.qualification || ""} className="w-full border rounded px-3 py-2 text-sm bg-white">
-                  <option value="">Any Qualification</option><option value="10th">10th Pass</option><option value="12th">12th Pass</option><option value="Graduate">Graduate</option><option value="ITI">ITI / Diploma</option>
+                  <option value="">Any Qualification</option><option value="10th">10th Pass</option><option value="12th">12th Pass</option><option value="Graduate">Graduate</option><option value="B.Ed">B.Ed / Teacher</option><option value="ITI">ITI / Diploma</option>
                 </select>
               </div>
               <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded">Search Jobs</button>
