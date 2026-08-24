@@ -1,0 +1,45 @@
+-- Migration: 002_teacher_recruitment
+-- Seed the Maharashtra Teacher Recruitment 2026 item into the database-backed jobs listing.
+
+INSERT OR IGNORE INTO recruitments (
+  id, slug, title, short_title, organisation, department, recruitment_category,
+  description, number_of_posts, state, location, job_type, employment_type,
+  minimum_qualification, subject_requirements, certifications_required,
+  application_mode, selection_process, document_verification,
+  official_organisation, official_notification_url, official_application_url,
+  official_source_url, source_title, source_published_date, source_last_checked,
+  last_verified_at, status, meta_title, meta_description, keywords, published_at
+) VALUES (
+  'mh-teacher-recruitment-2026',
+  'maharashtra-teacher-recruitment-2026',
+  'Maharashtra Teacher Recruitment 2026 – Pavitra Portal',
+  'Maharashtra Teacher Recruitment 2026',
+  'Maharashtra School Education and Sports Department',
+  'School Education Department',
+  'State',
+  'Teacher and Shikshan Sevak recruitment through the Maharashtra Pavitra Portal, linked to TAIT 2025. Candidates must verify post-wise eligibility and official notices before applying or relying on status updates.',
+  30209,
+  'Maharashtra',
+  'Maharashtra',
+  'Teacher',
+  'Government / Aided / Local Body / applicable management schools',
+  'D.Ed./D.El.Ed., B.Ed. or relevant qualification as prescribed for the post',
+  'Eligibility varies by class, subject, medium and post.',
+  'TAIT 2025 and applicable TET/CTET/teacher-education requirements',
+  'Online',
+  'Pavitra Portal preference process, merit/selection as prescribed, and document verification',
+  1,
+  'Maharashtra School Education and Sports Department',
+  'https://mahateacherrecruitment.org.in/',
+  'https://tait2025.mahateacherrecruitment.org.in/Public/Home.aspx',
+  'https://tait2025.mahateacherrecruitment.org.in/Public/Home.aspx',
+  'PAVITRA Teacher Recruitment / TAIT 2025 official portal',
+  '2026-08-06',
+  '2026-08-24',
+  '2026-08-24',
+  'published',
+  'Maharashtra Teacher Recruitment 2026 | Pavitra Portal | TAIT 2025',
+  'Maharashtra Teacher Recruitment 2026: 30,209 vacancies, Pavitra Portal preference process, TAIT 2025 eligibility and official recruitment links.',
+  'Maharashtra teacher recruitment, Pavitra Portal, TAIT 2025, Shikshan Sevak, teacher vacancy 2026',
+  CURRENT_TIMESTAMP
+);
