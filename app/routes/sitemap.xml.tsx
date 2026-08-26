@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs } from "react-router";
-import { createDb } from "~/db/index.server";
-import { getPublishedSlugs } from "~/models/recruitment.server";
+import { createDb } from "../db/index.server";
+import { getPublishedSlugs } from "../models/recruitment.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const origin = (process.env.SITE_URL || new URL(request.url).origin).replace(/\/$/, "");
