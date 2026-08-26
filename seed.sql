@@ -1,31 +1,94 @@
--- Insert a test Admin User
-INSERT INTO users (id, email, password_hash, role, status, email_verified)
-VALUES ('usr_1', 'admin@recruitment.local', 'hashed_placeholder', 'admin', 'active', 1);
+-- Verified seed data for the recruitment portal.
+-- Source verified against the official UPSC recruitment pages on 26 Aug 2026.
 
--- Insert a test Profile
-INSERT INTO profiles (id, user_id, first_name, last_name, state, district)
-VALUES ('prof_1', 'usr_1', 'Admin', 'User', 'Maharashtra', 'Pune');
-
--- Insert Sample Recruitment 1: MPSC
 INSERT INTO recruitments (
-    id, slug, title, short_title, organisation, recruitment_category, 
-    number_of_posts, state, minimum_qualification, minimum_age, maximum_age, 
-    application_last_date, status
+    id,
+    slug,
+    title,
+    short_title,
+    organisation,
+    department,
+    recruitment_category,
+    advertisement_number,
+    description,
+    number_of_posts,
+    vacancy_details,
+    state,
+    location,
+    job_type,
+    employment_type,
+    minimum_qualification,
+    experience_required,
+    maximum_age,
+    age_as_on_date,
+    age_relaxation,
+    pay_level,
+    application_start_date,
+    application_last_date,
+    application_mode,
+    application_fee,
+    selection_process,
+    written_exam,
+    interview,
+    document_verification,
+    official_organisation,
+    official_notification_url,
+    official_application_url,
+    official_source_url,
+    source_title,
+    source_published_date,
+    source_last_checked,
+    last_verified_at,
+    status,
+    meta_title,
+    meta_description,
+    keywords,
+    created_at,
+    updated_at,
+    published_at
 ) VALUES (
-    'rec_1', 'mpsc-group-b-2026', 'MPSC Subordinate Services Non-Gazetted Group B', 'MPSC Group B', 
-    'Maharashtra Public Service Commission', 'State', 
-    480, 'Maharashtra', 'Graduate', 18, 38, 
-    datetime('now', '+15 days'), 'published'
-);
-
--- Insert Sample Recruitment 2: Railway
-INSERT INTO recruitments (
-    id, slug, title, short_title, organisation, recruitment_category, 
-    number_of_posts, state, minimum_qualification, minimum_age, maximum_age, 
-    application_last_date, status
-) VALUES (
-    'rec_2', 'rrb-technician-2026', 'Railway Recruitment Board Technician Grade III', 'RRB Technician', 
-    'Indian Railways', 'Central', 
-    9000, 'All India', '12th Pass / ITI', 18, 33, 
-    datetime('now', '+3 days'), 'published'
+    'upsc-10-2026-research-officer',
+    'upsc-research-officer-2026-advt-10',
+    'UPSC Research Officer Recruitment 2026 – Advertisement No. 10/2026',
+    'UPSC Research Officer 2026',
+    'Union Public Service Commission',
+    'National Atlas and Thematic Mapping Organisation, Ministry of Science and Technology',
+    'Central Government',
+    'Advertisement No. 10/2026',
+    'UPSC Advertisement No. 10/2026 includes 11 vacancies for Research Officer in the National Atlas and Thematic Mapping Organisation, Ministry of Science and Technology. Online applications opened on 8 August 2026 and the applicable closing date for this post is 28 August 2026 at 18:00 hours. Candidates must verify the complete eligibility, experience and category-specific conditions in the official UPSC advertisement before applying.',
+    11,
+    'Research Officer – 11 posts',
+    'All India',
+    'National Atlas and Thematic Mapping Organisation, Ministry of Science and Technology',
+    'Government of India',
+    'Permanent',
+    'Master''s degree in Geography, Geology, Applied Geology, Geoinformatics, Geographical Information System and Remote Sensing, or Geomatics/Geospatial Technology from a recognised University/Institute, with the prescribed subject background and other conditions in the official advertisement.',
+    'Post-specific experience requirements apply; candidates must check the official advertisement.',
+    40,
+    'Post-specific; see official Advertisement No. 10/2026',
+    'As per Government of India rules and the official advertisement',
+    'Level-10',
+    '2026-08-08',
+    '2026-08-28',
+    'Online',
+    '₹25 for candidates who are not exempt; applicable exemptions are as specified by UPSC.',
+    'Recruitment Test and/or Interview as determined by UPSC; see official advertisement.',
+    1,
+    1,
+    1,
+    'Union Public Service Commission (UPSC)',
+    'https://www.upsc.gov.in/recruitment/recruitment-advertisement',
+    'https://upsconline.nic.in/ora/',
+    'https://www.upsc.gov.in/recruitment/recruitment-advertisement',
+    'UPSC Recruitment Advertisements – Advertisement No. 10 - 2026',
+    '2026-08-10',
+    '2026-08-26',
+    '2026-08-26',
+    'published',
+    'UPSC Research Officer Recruitment 2026 – 11 Posts | Advt No. 10/2026',
+    'UPSC Research Officer Recruitment 2026: 11 vacancies under Advertisement No. 10/2026. Check eligibility, important dates and apply through the official UPSC portal.',
+    'UPSC Research Officer 2026, UPSC Recruitment 2026, Advertisement 10/2026, Government Jobs 2026, Research Officer Jobs, Ministry of Science and Technology',
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP
 );
