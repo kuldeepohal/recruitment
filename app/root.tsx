@@ -10,6 +10,20 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 
+export const meta: Route.MetaFunction = () => [
+  { title: "Government & Local Recruitment 2026 | Latest Job Notifications" },
+  {
+    name: "description",
+    content:
+      "Latest government, Zilla Parishad, MPSC, UPSC, municipal, Gram Panchayat, teacher and semi-government recruitment notifications. Check vacancies, eligibility, important dates and official application links.",
+  },
+  {
+    name: "keywords",
+    content:
+      "government recruitment 2026, Maharashtra government recruitment, Zilla Parishad recruitment, MPSC recruitment, UPSC recruitment, municipal recruitment, Gram Panchayat recruitment, teacher recruitment, semi-government recruitment, local government recruitment",
+  },
+];
+
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
