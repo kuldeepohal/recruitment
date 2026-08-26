@@ -3,11 +3,24 @@
   "references": [
     { "path": "./tsconfig.node.json" }
   ],
+  "include": ["**/*", ".react-router/types/**/*"],
+  "exclude": ["node_modules", "build", "dist"],
   "compilerOptions": {
-    "checkJs": true,
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
-    "skipLibCheck": true,
     "strict": true,
-    "noEmit": true
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./app/*"]
+    },
+    "types": ["node", "vite/client"]
   }
 }
