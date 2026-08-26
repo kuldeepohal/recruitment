@@ -1,7 +1,7 @@
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import { useLoaderData, Link } from "react-router";
-import { createDb } from "~/db/index.server";
-import { getRecruitmentBySlug } from "~/models/recruitment.server";
+import { createDb } from "../db/index.server";
+import { getRecruitmentBySlug } from "../models/recruitment.server";
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   if (!data?.job) return [{ title: "Recruitment Not Found | GovJob Central" }, { name: "robots", content: "noindex" }];
