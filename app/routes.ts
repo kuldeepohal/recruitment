@@ -5,5 +5,6 @@ export default [
   route("jobs", "routes/jobs.tsx"),
   route("recruitment/:slug", "routes/recruitment.$slug.tsx"),
   route("teacher-recruitment", "routes/teacher-recruitment.tsx"),
+  route("articles", "routes/articles.tsx"),
   route("sitemap.xml", "routes/sitemap.xml.tsx"),
 ] satisfies RouteConfig;
