@@ -15,7 +15,48 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  return <html lang="en"><head><meta charSet="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><Meta /><Links /><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5250183700649220" crossOrigin="anonymous"></script></head><body>{children}<ScrollRestoration /><Scripts /></body></html>;
+  return (
+    <html lang="en">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <Meta />
+        <Links />
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5250183700649220" crossOrigin="anonymous"></script>
+        
+        {/* Google Translate Integration */}
+        <script type="text/javascript" dangerouslySetInnerHTML={{ __html: `
+          function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: 'en,mr,hi', autoDisplay: false}, 'google_translate_element');
+          }
+        ` }}></script>
+        <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        <style dangerouslySetInnerHTML={{ __html: `
+          .goog-te-banner-frame { display: none !important; }
+          body { top: 0px !important; }
+          .skiptranslate { display: none !important; }
+          #google_translate_element { display: none !important; }
+        ` }} />
+      </head>
+      <body>
+        <div id="google_translate_element"></div>
+        
+        {/* Custom Language Switcher Links */}
+        <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 bg-white p-3 rounded-lg shadow-xl border border-gray-200">
+          <p className="text-xs font-semibold text-gray-500 text-center mb-1">Select Language</p>
+          <div className="flex gap-2">
+            <button onClick={() => { document.cookie = "googtrans=/en/en; path=/"; window.location.reload(); }} className="px-3 py-1 text-sm bg-gray-100 hover:bg-blue-100 text-gray-800 rounded transition-colors border border-gray-300">English</button>
+            <button onClick={() => { document.cookie = "googtrans=/en/mr; path=/"; window.location.reload(); }} className="px-3 py-1 text-sm bg-gray-100 hover:bg-blue-100 text-gray-800 rounded transition-colors border border-gray-300">मराठी</button>
+            <button onClick={() => { document.cookie = "googtrans=/en/hi; path=/"; window.location.reload(); }} className="px-3 py-1 text-sm bg-gray-100 hover:bg-blue-100 text-gray-800 rounded transition-colors border border-gray-300">हिंदी</button>
+          </div>
+        </div>
+
+        {children}
+        <ScrollRestoration />
+        <Scripts />
+      </body>
+    </html>
+  );
 }
 
 export default function App() { return <Outlet />; }
