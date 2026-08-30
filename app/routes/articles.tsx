@@ -7,6 +7,7 @@ export const meta: MetaFunction = () => [
 ];
 
 const articles = [
+  { slug: "pavitra-portal-shikshak-bharti", title: "Pavitra Portal Shikshak Bharti 2026", text: "शिक्षक अभियोग्यता व बुद्धिमत्ता चाचणी-२०२५ नुसार प्राप्त जाहिरातीतील मुलाखतीशिवाय या प्रकारातील रिक्त पदांसाठी उमेदवारांच्या निवडीसाठी शिफारशीबाबत याद्या." },
   { slug: "government-job-eligibility-for-freshers", title: "Government Job Eligibility for Freshers: A Simple Guide", text: "Understand age, education, category, nationality and other eligibility conditions before applying." },
   { slug: "how-to-acquire-eligibility-qualification", title: "How to Acquire the Qualification You Need for a Government Job", text: "Learn practical routes through 10th, 12th, ITI, diploma, graduation, B.Ed, postgraduate and professional qualifications." },
   { slug: "government-exam-preparation-plan", title: "Government Exam Preparation Plan for Beginners", text: "Build a realistic study routine, choose resources, revise effectively and track your progress." },
