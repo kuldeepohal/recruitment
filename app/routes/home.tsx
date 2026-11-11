@@ -26,10 +26,10 @@ export default function Index() {
         <div className="max-w-5xl mx-auto flex justify-between items-center">
           <h1 className="text-2xl font-bold text-blue-700">GovJob Central</h1>
           <nav className="space-x-4 text-sm font-medium">
-            <Link to="/" className="text-gray-700 hover:text-blue-600">Latest Jobs</Link>
-            <Link to="/" className="text-gray-700 hover:text-blue-600">Maharashtra</Link>
+            <Link to="/" className="text-gray-700 hover:text-blue-600">नवीन भरती</Link>
+            <Link to="/tifr-mumbai-bharti-2026" className="text-gray-700 hover:text-blue-600">TIFR मुंबई</Link>
             <Link to="/" className="text-blue-600 border border-blue-600 px-3 py-1.5 rounded hover:bg-blue-50">
-              Premium
+              प्रीमियम
             </Link>
           </nav>
         </div>
@@ -37,7 +37,7 @@ export default function Index() {
 
       {/* Main Content */}
       <main className="max-w-5xl mx-auto px-4 py-8 md:px-8">
-        <h2 className="text-xl font-bold mb-6 border-b pb-2">Latest Recruitments</h2>
+        <h2 className="text-xl font-bold mb-6 border-b pb-2">नवीन भरती</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {latestJobs.map((job) => (

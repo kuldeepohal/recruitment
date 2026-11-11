@@ -7,11 +7,11 @@ import { getRecruitmentBySlug } from "~/models/recruitment.server";
 export const meta: MetaFunction<typeof loader> = (args) => {
   const data = (args as any).data;
   if (!data?.job) {
-    return [{ title: "Recruitment Not Found | GovJob Central" }];
+    return [{ title: "भरती सापडली नाही | GovJob Central" }];
   }
   return [
     { title: `${data.job.title} | ${data.job.organisation}` },
-    { name: "description", content: `Official update for ${data.job.title}. ${data.job.numberOfPosts} posts available. Check eligibility and apply online.` },
+    { name: "description", content: `${data.job.title} बद्दल अधिकृत अपडेट. ${data.job.numberOfPosts} पदे उपलब्ध आहेत. पात्रता तपासा आणि ऑनलाईन अर्ज करा.` },
   ];
 };
 
@@ -45,7 +45,7 @@ export default function RecruitmentDetail() {
         <div className="max-w-4xl mx-auto flex justify-between items-center">
           <Link to="/" className="text-xl font-bold text-blue-700">GovJob Central</Link>
           <Link to="/" className="text-sm font-medium text-gray-500 hover:text-blue-600">
-            &larr; Back to Jobs
+            &larr; भरती यादीकडे परत
           </Link>
         </div>
       </header>
@@ -95,10 +95,10 @@ export default function RecruitmentDetail() {
         {/* Details Section */}
         <div className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden mb-8">
           <div className="p-6 border-b border-gray-200">
-            <h2 className="text-xl font-bold mb-4 border-l-4 border-blue-600 pl-3">Eligibility Details</h2>
+            <h2 className="text-xl font-bold mb-4 border-l-4 border-blue-600 pl-3">पात्रता तपशील</h2>
             <div className="prose prose-sm max-w-none text-gray-700">
-              <p><strong>Minimum Qualification:</strong> {job.minimumQualification || "Not specified in the official notification."}</p>
-              <p><strong>Age Limit:</strong> Candidates must be between {job.minimumAge} and {job.maximumAge} years of age.</p>
+              <p><strong>किमान पात्रता:</strong> {job.minimumQualification || "अधिकृत सूचनेत नमूद नाही."}</p>
+              <p><strong>वयोमर्यादा:</strong> उमेदवारांचे वय {job.minimumAge} ते {job.maximumAge} वर्षांदरम्यान असावे.</p>
             </div>
           </div>
         </div>
@@ -106,17 +106,17 @@ export default function RecruitmentDetail() {
         {/* Source of Truth / Apply Section (Rule 11 & Rule 44) */}
         <div className="bg-blue-50 border border-blue-100 rounded-lg p-6 flex flex-col md:flex-row items-center justify-between">
           <div className="mb-4 md:mb-0">
-            <h3 className="font-bold text-blue-900 mb-1">Important Links</h3>
+            <h3 className="font-bold text-blue-900 mb-1">महत्त्वाच्या लिंक्स</h3>
             <p className="text-sm text-blue-700">
-              Always verify eligibility from the official notification before applying.
+              अर्ज करण्यापूर्वी पात्रता अधिकृत सूचनेतून नक्की तपासा.
             </p>
           </div>
           <div className="flex flex-col gap-3 min-w-[200px]">
             <button className="bg-white border border-gray-300 text-gray-700 font-semibold py-2 px-4 rounded shadow-sm hover:bg-gray-50 text-center w-full">
-              Official Notification PDF
+              अधिकृत PDF जाहिरात
             </button>
             <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded shadow-sm transition-colors text-center w-full">
-              Apply on Official Website
+              अधिकृत वेबसाइटवर अर्ज करा
             </button>
           </div>
         </div>

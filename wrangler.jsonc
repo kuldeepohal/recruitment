@@ -1,5 +1,6 @@
 {
   "name": "recruitment-platform",
+  "main": "./workers/app.ts",
   "compatibility_date": "2026-08-16",
   "d1_databases": [
     {

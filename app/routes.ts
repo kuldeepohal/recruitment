@@ -7,6 +7,9 @@ export default [
   // 2. Maps "/jobs" to our search and filter page
   route("jobs", "routes/jobs.tsx"),
   
-  // 3. Maps "/recruitment/anything" to our dynamic detail page
+  // 3. Dedicated Marathi detail page for the linked TIFR article
+  route("tifr-mumbai-bharti-2026", "routes/tifr-mumbai-bharti-2026.tsx"),
+
+  // 4. Maps "/recruitment/anything" to our dynamic detail page
   route("recruitment/:slug", "routes/recruitment.$slug.tsx"),
 ] satisfies RouteConfig;

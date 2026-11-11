@@ -6,8 +6,8 @@ import { getRecruitmentsList } from "~/models/recruitment.server";
 // 1. SEO Metadata (Rule 31)
 export const meta: MetaFunction = () => {
   return [
-    { title: "Browse Government Jobs | GovJob Central" },
-    { name: "description", content: "Search and filter the latest government recruitments by state, qualification, and organization." },
+    { title: "भरती शोधा | GovJob Central" },
+    { name: "description", content: "राज्य, पात्रता आणि संस्थेनुसार ताज्या सरकारी भरती शोधा आणि फिल्टर करा." },
   ];
 };
 
@@ -42,8 +42,8 @@ export default function JobsListing() {
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <Link to="/" className="text-xl font-bold text-blue-700">GovJob Central</Link>
           <nav className="space-x-4 text-sm font-medium">
-            <Link to="/" className="text-gray-700 hover:text-blue-600">Home</Link>
-            <Link to="/jobs" className="text-blue-600 hover:text-blue-800">Browse Jobs</Link>
+            <Link to="/" className="text-gray-700 hover:text-blue-600">मुखपृष्ठ</Link>
+            <Link to="/jobs" className="text-blue-600 hover:text-blue-800">भरती शोधा</Link>
           </nav>
         </div>
       </header>
@@ -54,12 +54,12 @@ export default function JobsListing() {
         {/* FILTERS SIDEBAR */}
         <aside className="w-full md:w-64 flex-shrink-0">
           <div className="bg-white border border-gray-200 rounded-lg p-5 shadow-sm sticky top-4">
-            <h2 className="font-bold text-lg mb-4 border-b pb-2">Filter Jobs</h2>
+            <h2 className="font-bold text-lg mb-4 border-b pb-2">भरती फिल्टर करा</h2>
             
             {/* Form automatically updates URL search params on submit */}
             <Form method="get" className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Search</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">शोधा</label>
                 <input 
                   type="text" 
                   name="search" 
@@ -70,13 +70,13 @@ export default function JobsListing() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">State</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">राज्य</label>
                 <select 
                   name="state" 
                   defaultValue={filters.state || ""}
                   className="w-full border border-gray-300 rounded px-3 py-2 text-sm bg-white focus:border-blue-500 outline-none"
                 >
-                  <option value="">All India</option>
+                  <option value="">संपूर्ण भारत</option>
                   <option value="Maharashtra">Maharashtra</option>
                   <option value="Delhi">Delhi</option>
                   <option value="Uttar Pradesh">Uttar Pradesh</option>
@@ -84,17 +84,17 @@ export default function JobsListing() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Qualification</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">पात्रता</label>
                 <select 
                   name="qualification" 
                   defaultValue={filters.qualification || ""}
                   className="w-full border border-gray-300 rounded px-3 py-2 text-sm bg-white focus:border-blue-500 outline-none"
                 >
-                  <option value="">Any Qualification</option>
-                  <option value="10th">10th Pass</option>
-                  <option value="12th">12th Pass</option>
-                  <option value="Graduate">Graduate</option>
-                  <option value="ITI">ITI / Diploma</option>
+                  <option value="">कोणतीही पात्रता</option>
+                  <option value="10th">१० वी पास</option>
+                  <option value="12th">१२ वी पास</option>
+                  <option value="Graduate">पदवीधर</option>
+                  <option value="ITI">ITI / डिप्लोमा</option>
                 </select>
               </div>
 
@@ -102,7 +102,7 @@ export default function JobsListing() {
                 type="submit" 
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded text-sm transition-colors"
               >
-                Apply Filters
+                फिल्टर लागू करा
               </button>
 
               {/* Clear Filters Button */}
@@ -111,7 +111,7 @@ export default function JobsListing() {
                   to="/jobs" 
                   className="block text-center text-sm text-red-600 hover:underline mt-2"
                 >
-                  Clear All
+                  सर्व साफ करा
                 </Link>
               )}
             </Form>
@@ -122,15 +122,15 @@ export default function JobsListing() {
         <div className="flex-grow">
           <div className="mb-4 flex justify-between items-end">
             <h1 className="text-2xl font-bold text-gray-900">
-              {filters.search ? `Results for "${filters.search}"` : "All Recruitments"}
+              {filters.search ? `"${filters.search}" साठी परिणाम` : "सर्व भरती"}
             </h1>
-            <span className="text-sm text-gray-500">{jobs.length} jobs found</span>
+            <span className="text-sm text-gray-500">{jobs.length} भरती सापडल्या</span>
           </div>
 
           {jobs.length === 0 ? (
             <div className="bg-white border border-gray-200 rounded-lg p-12 text-center">
-              <p className="text-gray-500 text-lg">No recruitments found matching your filters.</p>
-              <Link to="/jobs" className="text-blue-600 hover:underline mt-2 inline-block">Clear filters</Link>
+              <p className="text-gray-500 text-lg">तुमच्या फिल्टरनुसार कोणतीही भरती सापडली नाही.</p>
+              <Link to="/jobs" className="text-blue-600 hover:underline mt-2 inline-block">फिल्टर साफ करा</Link>
             </div>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">

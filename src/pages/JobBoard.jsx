@@ -38,7 +38,7 @@ const JobBoard = () => {
       
       {/* Navigation Bar */}
       <nav className="bg-white shadow-sm py-4 px-8 flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-extrabold text-blue-600">RecruitHub</h1>
+        <h1 className="text-2xl font-extrabold text-blue-600">भरतीHub</h1>
         
         <div>
           {isLoggedIn ? (
@@ -46,14 +46,14 @@ const JobBoard = () => {
               onClick={() => setIsLoggedIn(false)}
               className="text-red-500 hover:text-red-700 font-semibold"
             >
-              Log Out
+              लॉग आउट
             </button>
           ) : (
             <button 
               onClick={() => setIsLoggedIn(true)}
               className="bg-gray-900 text-white px-5 py-2 rounded hover:bg-gray-800 font-semibold"
             >
-              Log In / Sign Up
+              लॉगिन / नोंदणी
             </button>
           )}
         </div>
@@ -62,8 +62,8 @@ const JobBoard = () => {
       {/* Main Content Area */}
       <main className="max-w-5xl mx-auto px-4 pb-12">
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Latest Jobs</h2>
-          <p className="text-gray-600">Find your next dream job or hire top talent.</p>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">नवीन नोकऱ्या</h2>
+          <p className="text-gray-600">तुमची पुढची उत्तम नोकरी शोधा किंवा सर्वोत्तम उमेदवार भाड्याने घ्या.</p>
         </div>
 
         {/* 2. Looping through the data to create JobCards */}
