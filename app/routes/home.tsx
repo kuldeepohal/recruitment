@@ -11,7 +11,12 @@ export const loader = async ({ context }: LoaderFunctionArgs) => {
   return { latestJobs };
 };
 
-export const meta: MetaFunction = () => [\n  { title: "GovJob Central | नवीन सरकारी भरती आणि नोकरी अपडेट्स" },\n  { name: "description", content: "महाराष्ट्रासह भारतातील सरकारी भरती जाहिराती, पात्रता, रिक्त पदे आणि अर्जाच्या अंतिम तारखा शोधा." },\n];\n\nconst SAVED_KEY = "govjob-central:saved-jobs";
+export const meta: MetaFunction = () => [
+  { title: "GovJob Central | नवीन सरकारी भरती आणि नोकरी अपडेट्स" },
+  { name: "description", content: "महाराष्ट्रासह भारतातील सरकारी भरती जाहिराती, पात्रता, रिक्त पदे आणि अर्जाच्या अंतिम तारखा शोधा." },
+];
+
+const SAVED_KEY = "govjob-central:saved-jobs";
 
 export default function Index() {
   const { latestJobs } = useLoaderData<typeof loader>();
