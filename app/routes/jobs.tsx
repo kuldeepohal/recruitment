@@ -1,95 +1,82 @@
+import { useEffect, useState } from "react";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
-import { useLoaderData, Link, Form, useSearchParams } from "react-router";
+import { useLoaderData, Link, Form } from "react-router";
 import { createDb } from "~/db/index.server";
 import { getRecruitmentsList } from "~/models/recruitment.server";
 
-// 1. SEO Metadata (Rule 31)
-export const meta: MetaFunction = () => {
-  return [
-    { title: "भरती शोधा | GovJob Central" },
-    { name: "description", content: "राज्य, पात्रता आणि संस्थेनुसार ताज्या सरकारी भरती शोधा आणि फिल्टर करा." },
-  ];
-};
+export const meta: MetaFunction = () => [
+  { title: "सरकारी भरती शोधा | GovJob Central" },
+  { name: "description", content: "राज्य, शैक्षणिक पात्रता आणि पदानुसार सरकारी भरती जाहिराती शोधा. रिक्त पदे आणि अर्जाच्या अंतिम तारखा तपासा." },
+];
 
-// 2. Server Loader with Cloudflare Env Fallback
 export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const state = url.searchParams.get("state") || undefined;
   const qualification = url.searchParams.get("qualification") || undefined;
   const search = url.searchParams.get("search") || undefined;
-
-  // Safely extract the Cloudflare environment
   const env = (context as any).cloudflare?.env || (globalThis as any).env;
-  if (!env?.DB) {
-    return { jobs: [], filters: { state, qualification, search } };
-  }
+  if (!env?.DB) return { jobs: [], filters: { state, qualification, search } };
   const db = createDb(env.DB as D1Database);
-  
   const jobs = await getRecruitmentsList(db, { state, qualification, search });
-  
   return { jobs, filters: { state, qualification, search } };
 };
 
-// 3. Page UI (Rule 18 & 19)
+const SAVED_KEY = "govjob-central:saved-jobs";
+
 export default function JobsListing() {
   const { jobs, filters } = useLoaderData<typeof loader>();
-  const [searchParams] = useSearchParams();
+  const [savedIds, setSavedIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem(SAVED_KEY) || "[]");
+      if (Array.isArray(stored)) setSavedIds(stored.filter((id): id is string => typeof id === "string"));
+    } catch {
+      localStorage.removeItem(SAVED_KEY);
+    }
+  }, []);
+
+  function toggleSaved(id: string) {
+    setSavedIds((current) => {
+      const next = current.includes(id) ? current.filter((item) => item !== id) : [...current, id];
+      localStorage.setItem(SAVED_KEY, JSON.stringify(next));
+      return next;
+    });
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900 font-sans flex flex-col">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-4 py-4 md:px-8">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <Link to="/" className="text-xl font-bold text-blue-700">GovJob Central</Link>
-          <nav className="space-x-4 text-sm font-medium">
-            <Link to="/" className="text-gray-700 hover:text-blue-600">मुखपृष्ठ</Link>
-            <Link to="/jobs" className="text-blue-600 hover:text-blue-800">भरती शोधा</Link>
+    <div className="min-h-screen bg-slate-50 text-slate-900">
+      <header className="border-b border-slate-200 bg-white px-4 py-4 md:px-8">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4">
+          <Link to="/" className="text-xl font-extrabold text-blue-800">GovJob Central</Link>
+          <nav aria-label="मुख्य नेव्हिगेशन" className="flex gap-4 text-sm font-semibold">
+            <Link to="/" className="text-slate-700 hover:text-blue-700">मुखपृष्ठ</Link>
+            <Link to="/jobs" className="text-blue-700">भरती शोधा</Link>
           </nav>
         </div>
       </header>
 
-      {/* Main Layout: Sidebar + Grid */}
-      <main className="flex-grow max-w-7xl mx-auto w-full px-4 py-8 md:px-8 flex flex-col md:flex-row gap-8">
-        
-        {/* FILTERS SIDEBAR */}
-        <aside className="w-full md:w-64 flex-shrink-0">
-          <div className="bg-white border border-gray-200 rounded-lg p-5 shadow-sm sticky top-4">
-            <h2 className="font-bold text-lg mb-4 border-b pb-2">भरती फिल्टर करा</h2>
-            
-            {/* Form automatically updates URL search params on submit */}
-            <Form method="get" className="space-y-4">
+      <main className="mx-auto flex w-full max-w-7xl flex-col gap-7 px-4 py-8 md:flex-row md:px-8">
+        <aside className="w-full flex-shrink-0 md:w-72">
+          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm md:sticky md:top-4">
+            <h1 className="text-lg font-extrabold">भरती फिल्टर करा</h1>
+            <Form method="get" className="mt-4 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">शोधा</label>
-                <input 
-                  type="text" 
-                  name="search" 
-                  defaultValue={filters.search}
-                  placeholder="e.g. Police, Clerk..." 
-                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
-                />
+                <label htmlFor="search" className="mb-1 block text-sm font-semibold">पद किंवा संस्था शोधा</label>
+                <input id="search" type="search" name="search" defaultValue={filters.search} placeholder="उदा. पोलीस, शिक्षक, लिपिक" className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100" />
               </div>
-
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">राज्य</label>
-                <select 
-                  name="state" 
-                  defaultValue={filters.state || ""}
-                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm bg-white focus:border-blue-500 outline-none"
-                >
+                <label htmlFor="state" className="mb-1 block text-sm font-semibold">राज्य</label>
+                <select id="state" name="state" defaultValue={filters.state || ""} className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-blue-600">
                   <option value="">संपूर्ण भारत</option>
-                  <option value="Maharashtra">Maharashtra</option>
-                  <option value="Delhi">Delhi</option>
-                  <option value="Uttar Pradesh">Uttar Pradesh</option>
+                  <option value="Maharashtra">महाराष्ट्र</option>
+                  <option value="Delhi">दिल्ली</option>
+                  <option value="Uttar Pradesh">उत्तर प्रदेश</option>
                 </select>
               </div>
-
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">पात्रता</label>
-                <select 
-                  name="qualification" 
-                  defaultValue={filters.qualification || ""}
-                  className="w-full border border-gray-300 rounded px-3 py-2 text-sm bg-white focus:border-blue-500 outline-none"
-                >
+                <label htmlFor="qualification" className="mb-1 block text-sm font-semibold">शैक्षणिक पात्रता</label>
+                <select id="qualification" name="qualification" defaultValue={filters.qualification || ""} className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-blue-600">
                   <option value="">कोणतीही पात्रता</option>
                   <option value="10th">१० वी पास</option>
                   <option value="12th">१२ वी पास</option>
@@ -97,78 +84,56 @@ export default function JobsListing() {
                   <option value="ITI">ITI / डिप्लोमा</option>
                 </select>
               </div>
-
-              <button 
-                type="submit" 
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded text-sm transition-colors"
-              >
-                फिल्टर लागू करा
-              </button>
-
-              {/* Clear Filters Button */}
-              {(filters.state || filters.qualification || filters.search) && (
-                <Link 
-                  to="/jobs" 
-                  className="block text-center text-sm text-red-600 hover:underline mt-2"
-                >
-                  सर्व साफ करा
-                </Link>
-              )}
+              <button type="submit" className="w-full rounded-lg bg-blue-700 px-4 py-3 text-sm font-bold text-white hover:bg-blue-800">फिल्टर लागू करा</button>
+              {(filters.state || filters.qualification || filters.search) && <Link to="/jobs" className="block text-center text-sm font-semibold text-rose-700 hover:underline">फिल्टर साफ करा</Link>}
             </Form>
           </div>
         </aside>
 
-        {/* RESULTS GRID */}
-        <div className="flex-grow">
-          <div className="mb-4 flex justify-between items-end">
-            <h1 className="text-2xl font-bold text-gray-900">
-              {filters.search ? `"${filters.search}" साठी परिणाम` : "सर्व भरती"}
-            </h1>
-            <span className="text-sm text-gray-500">{jobs.length} भरती सापडल्या</span>
+        <section className="min-w-0 flex-1">
+          <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <p className="text-sm font-bold text-blue-700">सरकारी नोकरी अपडेट्स</p>
+              <h2 className="mt-1 text-2xl font-extrabold">{filters.search ? `“${filters.search}” साठी भरती` : "सर्व उपलब्ध भरती"}</h2>
+            </div>
+            <span className="text-sm text-slate-600">{jobs.length} जाहिराती</span>
           </div>
 
           {jobs.length === 0 ? (
-            <div className="bg-white border border-gray-200 rounded-lg p-12 text-center">
-              <p className="text-gray-500 text-lg">तुमच्या फिल्टरनुसार कोणतीही भरती सापडली नाही.</p>
-              <Link to="/jobs" className="text-blue-600 hover:underline mt-2 inline-block">फिल्टर साफ करा</Link>
+            <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
+              <h3 className="font-bold">तुमच्या शोधानुसार भरती सापडली नाही.</h3>
+              <p className="mt-2 text-sm text-slate-600">शोधशब्द किंवा फिल्टर बदलून पुन्हा प्रयत्न करा.</p>
+              <Link to="/jobs" className="mt-4 inline-block font-semibold text-blue-700 hover:underline">सर्व फिल्टर साफ करा</Link>
             </div>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              {jobs.map((job) => (
-                <article key={job.id} className="bg-white border border-gray-200 rounded-lg p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
-                  <div>
-                    <div className="flex justify-between items-start mb-2">
-                      <span className="text-xs font-semibold bg-green-100 text-green-800 px-2 py-1 rounded">NEW</span>
-                      <span className="text-xs text-gray-500 font-medium bg-gray-100 px-2 py-1 rounded">{job.state}</span>
+            <div className="grid gap-4 lg:grid-cols-2">
+              {jobs.map((job) => {
+                const isSaved = savedIds.includes(String(job.id));
+                return (
+                  <article key={job.id} className="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
+                    <div className="flex items-start justify-between gap-3">
+                      <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-800">प्रकाशित</span>
+                      <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">{job.state || "भारत"}</span>
                     </div>
-                    <h3 className="text-sm font-bold text-gray-600 uppercase tracking-wide mt-3">{job.organisation}</h3>
-                    <h4 className="text-lg font-semibold text-gray-900 leading-snug mt-1 mb-4">{job.title}</h4>
-                    
-                    <div className="grid grid-cols-2 gap-y-3 text-sm mb-5">
-                      <div>
-                        <span className="block text-gray-500 text-xs">Vacancies</span>
-                        <span className="font-medium">{job.numberOfPosts || "N/A"}</span>
-                      </div>
-                      <div>
-                        <span className="block text-gray-500 text-xs">Qualification</span>
-                        <span className="font-medium truncate block pr-2" title={job.minimumQualification || ""}>
-                          {job.minimumQualification || "See Details"}
-                        </span>
-                      </div>
+                    <p className="mt-4 text-xs font-bold uppercase tracking-wide text-slate-500">{job.organisation}</p>
+                    <h3 className="mt-1 text-lg font-bold leading-snug">{job.title}</h3>
+                    <dl className="mt-5 grid grid-cols-2 gap-4 text-sm">
+                      <div><dt className="text-slate-500">रिक्त पदे</dt><dd className="mt-1 font-semibold">{job.numberOfPosts || "जाहिरात पहा"}</dd></div>
+                      <div><dt className="text-slate-500">पात्रता</dt><dd className="mt-1 font-semibold">{job.minimumQualification || "जाहिरात पहा"}</dd></div>
+                      <div><dt className="text-slate-500">वयोमर्यादा</dt><dd className="mt-1 font-semibold">{job.minimumAge != null || job.maximumAge != null ? `${job.minimumAge ?? "—"}–${job.maximumAge ?? "—"} वर्षे` : "जाहिरात पहा"}</dd></div>
+                      <div><dt className="text-slate-500">अंतिम तारीख</dt><dd className="mt-1 font-semibold text-rose-700">{job.applicationLastDate ? new Date(job.applicationLastDate).toLocaleDateString("mr-IN") : "जाहीर व्हायची आहे"}</dd></div>
+                    </dl>
+                    <div className="mt-auto flex items-center justify-between border-t border-slate-100 pt-4">
+                      <button type="button" onClick={() => toggleSaved(String(job.id))} aria-pressed={isSaved} className="rounded-lg px-3 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50">{isSaved ? "♥ जतन केले" : "♡ जतन करा"}</button>
+                      <Link to={`/recruitment/${job.slug}`} className="rounded-lg bg-blue-700 px-4 py-2 text-sm font-bold text-white hover:bg-blue-800">तपशील पहा</Link>
                     </div>
-                  </div>
-
-                  <div className="flex justify-between items-center pt-4 border-t border-gray-100 mt-auto">
-                    <button className="text-gray-500 hover:text-blue-600 text-sm font-medium flex items-center gap-1">♡ Save</button>
-                    <Link to={`/recruitment/${job.slug}`} className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded transition-colors">
-                      View Details
-                    </Link>
-                  </div>
-                </article>
-              ))}
+                  </article>
+                );
+              })}
             </div>
           )}
-        </div>
+          <p className="mt-6 rounded-xl bg-amber-50 p-4 text-sm leading-6 text-amber-900">अर्ज करण्यापूर्वी अधिकृत जाहिरात, पात्रता, वयोमर्यादा आणि अंतिम तारीख तपासणे आवश्यक आहे.</p>
+        </section>
       </main>
     </div>
   );
