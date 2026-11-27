@@ -1,4 +1,4 @@
-import { desc, eq, and, like } from "drizzle-orm";
+import { desc, eq, and, like, or } from "drizzle-orm";
 import { recruitments } from "~/db/schema";
 import type { AppDb } from "~/db/index.server";
 
@@ -29,7 +29,7 @@ export async function getRecruitmentBySlug(db: AppDb, slug: string) {
   const result = await db
     .select()
     .from(recruitments)
-    .where(eq(recruitments.slug, slug))
+    .where(and(eq(recruitments.slug, slug), eq(recruitments.status, "published")))
     .limit(1);
     
   return result[0] || null;
@@ -49,7 +49,7 @@ export async function getRecruitmentsList(
     conditions.push(like(recruitments.minimumQualification, `%${filters.qualification}%`));
   }
   if (filters.search) {
-    conditions.push(like(recruitments.title, `%${filters.search}%`));
+    conditions.push(or(like(recruitments.title, `%${filters.search}%`), like(recruitments.organisation, `%${filters.search}%`))!);
   }
 
   return db
